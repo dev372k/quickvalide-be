@@ -1,0 +1,4 @@
+django
+pyJWT
+django-cors-headers
+dj-database-url

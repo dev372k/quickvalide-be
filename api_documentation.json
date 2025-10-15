@@ -1,0 +1,120 @@
+{
+  "info": {
+    "name": "Form API",
+    "_postman_id": "form-api-collection",
+    "description": "APIs for creating, listing, updating, deleting, restoring, and publishing forms",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Form",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"Feedback Form\",\n    \"description\": \"Customer feedback\",\n    \"redirect_url\": \"https://example.com/thank-you\",\n    \"theme\": {\"primary_color\": \"#4CAF50\"},\n    \"widget_theme\": {\"button_style\": \"rounded\"},\n    \"is_public\": true\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/forms/create/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["forms", "create"]
+        }
+      }
+    },
+    {
+      "name": "List Forms",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/forms/list/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["forms", "list"]
+        }
+      }
+    },
+    {
+      "name": "Get Form",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/forms/{{uuid}}/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["forms", "{{uuid}}"]
+        }
+      }
+    },
+    {
+      "name": "Update Form",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"Updated Title\",\n    \"description\": \"Updated description\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/forms/{{uuid}}/update/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["forms", "{{uuid}}", "update"]
+        }
+      }
+    },
+    {
+      "name": "Delete Form",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/forms/{{uuid}}/delete/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["forms", "{{uuid}}", "delete"]
+        }
+      }
+    },
+    {
+      "name": "Restore Form",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/forms/{{uuid}}/restore/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["forms", "{{uuid}}", "restore"]
+        }
+      }
+    },
+    {
+      "name": "Toggle Publish",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/forms/{{uuid}}/toggle-publish/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["forms", "{{uuid}}", "toggle-publish"]
+        }
+      }
+    }
+  ]
+}
