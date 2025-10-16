@@ -11,8 +11,13 @@ def create_feedback(request):
 @csrf_exempt
 @require_http_methods(["GET"])
 @jwt_required
-def list_feedback(request, form_uuid):
-    return services.list_feedback_service(request, form_uuid)
+def list_feedback_by_user(request, form_uuid):
+    return services.list_feedback_by_user_service(request, form_uuid)
+
+@csrf_exempt
+@require_http_methods(["GET"])
+def list_feedback_by_form(request, form_uuid):
+    return services.list_feedback_by_form_service(request, form_uuid)
 
 @csrf_exempt
 @require_http_methods(["DELETE"])

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickValide Testimonials</title>
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      background-color: #f9fafb;
+      color: #333;
+      margin: 0;
+      padding: 40px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h1 {
+      text-align: center;
+      color: #111827;
+      margin-bottom: 20px;
+    }
+
+    #theme-selector {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    select {
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 1rem;
+      cursor: pointer;
+      background: white;
+    }
+
+    #testimonials {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      padding: 24px;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .name {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #1f2937;
+    }
+
+    .rating {
+      color: #fbbf24;
+      margin: 6px 0;
+    }
+
+    .message {
+      font-size: 0.95rem;
+      color: #4b5563;
+      margin-top: 8px;
+    }
+
+    .sentiment {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: white;
+    }
+
+    #loading {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #6b7280;
+    }
+
+    /* === THEMES === */
+
+    /* 1️⃣ Minimal */
+    body.minimal {
+      background-color: #ffffff;
+      color: #111827;
+    }
+    body.minimal .card {
+      background: transparent;
+      box-shadow: none;
+      border-left: 3px solid #3b82f6;
+    }
+
+    /* 2️⃣ Modern Dark */
+    body.dark {
+      background-color: #111827;
+      color: #f3f4f6;
+    }
+    body.dark .card {
+      background: #1f2937;
+      color: #f9fafb;
+      border: 1px solid #374151;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+    body.dark .rating {
+      color: #facc15;
+    }
+
+    /* 3️⃣ Highlighted Card */
+    body.highlight {
+      background-color: #fefce8;
+    }
+    body.highlight .card {
+      border: 2px solid #fde68a;
+      background: #fffbe6;
+      box-shadow: 0 3px 6px rgba(251,191,36,0.25);
+    }
+    body.highlight .name {
+      color: #92400e;
+    }
+  </style>
+</head>
+<body class="highlight">
+  <h1>Testimonials</h1>
+
+  <div id="theme-selector"> 
+    <select id="theme">
+      <option value="highlight">Sunny Highlight</option>
+      <option value="minimal">Minimal</option>
+      <option value="dark">Modern Dark</option>
+    </select>
+  </div>
+
+  <div id="loading">Loading testimonials...</div>
+  <div id="testimonials"></div>
+
+  <script>
+    const API_URL = "http://127.0.0.1:9000/feedbacks/list/ca61feee-3526-4b42-88d7-4321daefffec/widget/";
+
+    async function fetchTestimonials() {
+      try {
+        const response = await fetch(API_URL);
+        const result = await response.json();
+
+        if (result.status !== "success" || !result.data?.length) {
+          document.getElementById("loading").innerText = "No testimonials found.";
+          return;
+        }
+
+        const testimonials = result.data;
+        const container = document.getElementById("testimonials");
+        document.getElementById("loading").style.display = "none";
+
+        testimonials.forEach(item => {
+          const card = document.createElement("div");
+          card.className = "card";
+
+          const name = document.createElement("div");
+          name.className = "name";
+          name.textContent = item.name || "Anonymous";
+
+          const rating = document.createElement("div");
+          rating.className = "rating";
+          rating.textContent = "★".repeat(item.rating || 0);
+
+          const message = document.createElement("div");
+          message.className = "message";
+          message.textContent = item.message || "No message provided.";
+
+          const sentiment = document.createElement("span");
+        //   sentiment.className = "sentiment";
+        //   sentiment.textContent = item.sentiment || "neutral";
+
+        //   if (item.sentiment === "positive") sentiment.style.background = "#10b981";
+        //   else if (item.sentiment === "negative") sentiment.style.background = "#ef4444";
+        //   else sentiment.style.background = "#f59e0b";
+
+          card.append(name, rating, message, sentiment);
+          container.appendChild(card);
+        });
+      } catch (err) {
+        document.getElementById("loading").innerText = "Failed to load testimonials.";
+        console.error(err);
+      }
+    }
+
+    document.getElementById("theme").addEventListener("change", (e) => {
+      document.body.className = e.target.value;
+    });
+
+    fetchTestimonials();
+  </script>
+</body>
+</html>

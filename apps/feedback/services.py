@@ -2,7 +2,7 @@ import json
 import requests
 from django.shortcuts import get_object_or_404
 from .models import Feedback
-from form.models import Form
+from ..form.models import Form
 from ..user.models import Profile
 from commons.utils.jsonUtil import success_response, error_response
 
@@ -111,7 +111,7 @@ def create_feedback_service(request):
         return success_response(
             message="Feedback submitted successfully.",
             data={
-                "uuid": str(feedback.uuid),
+                "id": feedback.id,
                 "sentiment": feedback.sentiment,
                 "sentiment_score": feedback.sentiment_score,
                 "summary": feedback.summary,
@@ -122,11 +122,21 @@ def create_feedback_service(request):
         return error_response(message=str(e), status=500)
 
 
-def list_feedback_service(request, form_uuid):
+def list_feedback_by_user_service(request, form_uuid):
     try:
         user = get_user_from_request(request)
         form = get_object_or_404(Form, uuid=form_uuid, user=user, is_deleted=False)
         feedbacks = form.feedbacks.filter(is_deleted=False).values(
+            "id", "name", "email", "message", "sentiment", "sentiment_score", "rating", "created_at"
+        )
+        return success_response(data=list(feedbacks), message="Feedback list retrieved successfully.")
+    except Exception as e:
+        return error_response(message=str(e), status=500)
+
+def list_feedback_by_form_service(request, form_uuid):
+    try:
+        form = get_object_or_404(Form, uuid=form_uuid, is_deleted=False)
+        feedbacks = form.feedbacks.filter(is_deleted=False, sentiment="positive").values(
             "id", "name", "email", "message", "sentiment", "sentiment_score", "rating", "created_at"
         )
         return success_response(data=list(feedbacks), message="Feedback list retrieved successfully.")

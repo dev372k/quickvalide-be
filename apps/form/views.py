@@ -41,14 +41,14 @@ def delete_form(request, uuid):
 
 # Restore Soft-Deleted Form
 @csrf_exempt
-@require_http_methods(["POST"])
+@require_http_methods(["PUT"])
 @jwt_required
 def restore_form(request, uuid):
     return services.restore_form_service(request, uuid)
 
 # Toggle is_public
 @csrf_exempt
-@require_http_methods(["POST"])
+@require_http_methods(["PUT"])
 @jwt_required
 def toggle_publish_form(request, uuid):
     return services.toggle_publish_form_service(request, uuid)
