@@ -42,3 +42,41 @@ def login_user_service(request):
     
         except Exception as e:
             return error_response(message=str(e), status=500)
+        
+
+def change_user_password(request):
+     data =json.loads(request.body)
+     user = authenticate(username = request.username, password = data.get('Old_password'))
+     if user is not None:
+          if(data.get('New_password')) == data.get('Confirm_password'):
+               user.set_password(data.get('New_password'))
+               user.save()
+               return success_response(message="Password changed successfully")
+          else:
+               return error_response(message="Please make sure both passwords are the same.")
+     else:
+          return error_response(message="Incorrect password.")
+
+
+def update_user(request,):
+     try:
+          user = Profile.objects.get(id=request.user_id)
+     except Profile.DoesNotExist:
+          return error_response(message=f"this user {request.user_id} is not present.")
+          
+     data = json.loads(request.body)
+     user.username = data.get('username')
+     user.email = data.get('email')
+     user.first_name = data.get('first_name')
+     user.last_name = data.get('last_name')
+     user.save()
+     return success_response(message="User updated successfully.")
+
+def delete_user(reuqest,user_id):
+     try:
+        user = Profile.objects.get(id=user_id)
+     except:
+        return error_response(message=f"this user {user_id} is not in the database.")
+     user.delete()
+     return success_response(message="User deleted successfully.")
+     
