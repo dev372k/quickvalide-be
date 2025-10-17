@@ -25,6 +25,12 @@ def list_forms(request):
 def get_form(request, uuid):
     return services.get_form_service(request, uuid)
 
+# Get Form by UUID
+@csrf_exempt
+@require_http_methods(["GET"])
+def get_form_details(request, uuid):
+    return services.get_form_details_service(request, uuid)
+
 # Update Form
 @csrf_exempt
 @require_http_methods(["PUT"])

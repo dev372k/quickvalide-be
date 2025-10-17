@@ -41,7 +41,7 @@ def create_form_service(request):
 
         return success_response(
             message="Form created successfully.",
-            data={"uuid": str(form.uuid), "title": form.title, "slug": form.slug},
+            data={"uuid": str(form.uuid), "title": form.title,"description" : form.description, "created_at": form.created_at},
         )
 
     except Exception as e:
@@ -84,6 +84,17 @@ def get_form_service(request, uuid, include_deleted=False):
     except Exception as e:
         return error_response(message=str(e), status=500)
 
+def get_form_details_service(request, uuid):
+    try:
+        queryset = Form.objects.filter(uuid=uuid)
+
+        form = queryset.values().first()
+        if not form:
+            return error_response("Form not found", status=404)
+
+        return success_response(data=form, message="Form retrieved successfully.")
+    except Exception as e:
+        return error_response(message=str(e), status=500)
 
 def update_form_service(request, uuid):
     try:
