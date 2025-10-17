@@ -5,12 +5,28 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 from django.conf import settings 
 from .models import Profile
+import uuid
 from commons.utils.jsonUtil import success_response, error_response
+
+plan = [{
+     "id": 1,
+     "name": "starter",
+     "allowed_form_count": 1
+},{
+     "id": 2,
+     "name": "boost",
+     "allowed_form_count": 5
+},{
+     "id": 3,
+     "name": "infinity",
+     "allowed_form_count": 100,
+}]
+
 
 def create_user_service(request):
     data = json.loads(request.body)
     hashed = make_password(data.get("password"))
-    Profile.objects.create(username=data.get("username"), password=hashed,email =data.get("email"),first_name=data.get('first_name'),last_name=data.get('last_name'))
+    Profile.objects.create(username=data.get("username"), password=hashed,email =data.get("email"),first_name=data.get('first_name'),last_name=data.get('last_name'), plan = plan[0])
     return success_response(message="User registered successfully.")
        
 def login_user_service(request):
@@ -30,7 +46,10 @@ def login_user_service(request):
                     "username": user.username,
                     "first_name": user.first_name,
                     "last_name": user.last_name,
-                    "email": user.email
+                    "email": user.email,
+                    "plan": user.plan,
+                    "api_key": uuid.uuid4().hex,
+                    "api_key_limit": 0,
                 },
                 "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=settings.JWT_EXP_DELTA_SECONDS),
                 "iat": datetime.datetime.utcnow(),
