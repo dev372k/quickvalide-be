@@ -2,7 +2,7 @@ import json
 import requests
 from django.shortcuts import get_object_or_404
 from .models import Feedback
-from form.models import Form
+from ..form.models import Form
 from ..user.models import Profile
 from commons.utils.jsonUtil import success_response, error_response
 

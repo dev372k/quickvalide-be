@@ -27,6 +27,7 @@ SECRET_KEY = 'django-insecure-n)lyv#*ur=s_3$5&m+tk9zx2xq(c7=8o22cjy6csg#$yzi!w^g
 DEBUG = True
 
 ALLOWED_HOSTS = []
+CORS_ALLOW_ALL_ORIGINS = True
 
 #JWT Configuration
 JWT_SECRET = SECRET_KEY  # better: use settings.SECRET_KEY
@@ -57,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'main.urls'
