@@ -11,6 +11,12 @@ def login(request):
     return services.login_user_service(request)
 
 @csrf_exempt
+@jwt_required
+@require_http_methods(["GET"])
+def get(request):
+    return services.get_user_service(request)
+
+@csrf_exempt
 @require_http_methods(["POST"])
 def create(request):
     return services.create_user_service(request)
