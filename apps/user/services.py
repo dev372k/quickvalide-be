@@ -134,6 +134,14 @@ def update_user_api_key(request):
      user.save()
      return success_response(message="User API key updated successfully.", data=get_user(user))
 
+def get_user_api_key(request):
+     try:
+          user = Profile.objects.get(id=request.user_id)
+     except Profile.DoesNotExist:
+          return error_response(message=f"this user {request.user_id} is not present.")
+     
+     return success_response(message="User API key updated successfully.", data={"api_key" : user.api_key})
+
 def delete_user(reuqest,user_id):
      try:
         user = Profile.objects.get(id=user_id)
