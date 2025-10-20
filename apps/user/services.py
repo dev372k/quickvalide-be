@@ -124,6 +124,16 @@ def update_user(request):
      user.save()
      return success_response(message="User updated successfully.", data=get_user(user))
 
+def update_user_api_key(request):
+     try:
+          user = Profile.objects.get(id=request.user_id)
+     except Profile.DoesNotExist:
+          return error_response(message=f"this user {request.user_id} is not present.")
+
+     user.api_key = uuid.uuid4().hex
+     user.save()
+     return success_response(message="User API key updated successfully.", data=get_user(user))
+
 def delete_user(reuqest,user_id):
      try:
         user = Profile.objects.get(id=user_id)
@@ -134,7 +144,7 @@ def delete_user(reuqest,user_id):
      
 def restore_user(request,user_id):
      try:
-          user = Profile.objects.get(request.user_id)
+          user = Profile.objects.get(id=user_id)
           if not user:
                return error_response(message="User not found or not deleted.", status=404)
           user.restore()          

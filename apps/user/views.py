@@ -35,6 +35,12 @@ def update(request):
 
 @jwt_required
 @csrf_exempt
+@require_http_methods(["PUT"])
+def update_key(request):
+    return services.update_user_api_key(request)
+
+@jwt_required
+@csrf_exempt
 @require_http_methods(["DELETE"])
 def delete(request,user_id):
     return services.delete_user(request,user_id)

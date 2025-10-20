@@ -22,4 +22,5 @@ urlpatterns = [
     path('users/',include('apps.user.urls')),
     path('forms/',include('apps.form.urls')),
     path('feedbacks/',include('apps.feedback.urls')),
+    path('api/',include('apps.api.urls')),
 ]

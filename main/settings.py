@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.user',
     'apps.form',
     'apps.feedback',
+    'apps.api',
 ]
 
 MIDDLEWARE = [
