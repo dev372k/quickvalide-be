@@ -4,6 +4,8 @@ from django.shortcuts import get_object_or_404
 from .models import Feedback
 from ..form.models import Form
 from ..user.models import Profile
+from django.db.models import Count
+from django.db.models.functions import TruncDate
 from commons.utils.jsonUtil import success_response, error_response
 
 
@@ -155,3 +157,15 @@ def delete_feedback_service(request, feedback_id):
         return success_response(message="Feedback deleted successfully.")
     except Exception as e:
         return error_response(message=str(e), status=500)
+    
+def feedback_count_service(request, form_uuid):
+    feedback_counts = (
+        Feedback.objects
+        .filter(uuid=form_uuid)
+        .annotate(date=TruncDate('sentiment'))  # assuming BaseModel has created_at
+        .values('date')
+        .annotate(count=Count('id'))
+        .order_by('-sentiment')
+    )
+
+    return success_response(list(feedback_counts))

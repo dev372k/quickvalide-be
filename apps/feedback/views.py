@@ -25,3 +25,9 @@ def list_feedback_by_form(request, form_uuid):
 def delete_feedback(request, feedback_id):
     return services.delete_feedback_service(request, feedback_id)
 
+@csrf_exempt
+@jwt_required
+@require_http_methods(["GET"])
+def feedback_count(request, form_uuid):
+    return services.feedback_count_service(request, form_uuid)
+
