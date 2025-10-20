@@ -94,12 +94,14 @@ def login_user_service(request):
         
 
 def change_user_password(request):
-     data =json.loads(request.body)
-     user_data = get_user_service(request.user_id)
+     data =json.loads(request.body) 
+     
+     user_data = Profile.objects.get(id=request.user_id)
+
      user = authenticate(username = user_data.username, password = data.get('old_password'))
      if user is not None:
           if(data.get('new_password')) == data.get('confirm_password'):
-               user.set_password(make_password(data.get('new_password')))
+               user.set_password(data.get('new_password'))
                user.save()
                return success_response(message="Password changed successfully")
           else:
@@ -115,7 +117,7 @@ def update_user(request):
           return error_response(message=f"this user {request.user_id} is not present.")
           
      data = json.loads(request.body)
-     user.username = data.get('username')
+     # user.username = data.get('username')
      # user.email = data.get('email')
      user.first_name = data.get('first_name')
      user.last_name = data.get('last_name')
@@ -130,3 +132,13 @@ def delete_user(reuqest,user_id):
      user.delete()
      return success_response(message="User deleted successfully.")
      
+def restore_user(request,user_id):
+     try:
+          user = Profile.objects.get(request.user_id)
+          if not user:
+               return error_response(message="User not found or not deleted.", status=404)
+          user.restore()          
+          return success_response(message="User restored successfully.")
+     
+     except Exception as e:
+          return error_response(message=str(e), status=500)

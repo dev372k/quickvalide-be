@@ -38,3 +38,9 @@ def update(request):
 @require_http_methods(["DELETE"])
 def delete(request,user_id):
     return services.delete_user(request,user_id)
+
+@jwt_required
+@csrf_exempt
+@require_http_methods(["PUT"])
+def restore(request,user_id):
+    return services.restore_user(request,user_id)
