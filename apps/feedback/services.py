@@ -10,13 +10,6 @@ from commons.utils.jsonUtil import success_response, error_response
 
 
 def sentiment_analyzer(message, rating):
-    """
-    Calls external AI API to analyze sentiment, summary, suggestions, and sentiment_score.
-    sentiment_score: float between 0 and 1, where 0 = fully negative, 1 = fully positive.
-    """
-    import json
-    import requests
-
     try:
         url = "https://sharp-gpt.ai/PostAPIRequest"
 
