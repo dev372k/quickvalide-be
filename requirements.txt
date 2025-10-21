@@ -1,4 +1,10 @@
-django
-pyJWT
-django-cors-headers
-dj-database-url
+django>=5.0,<6.0
+pyjwt>=2.8.0
+django-cors-headers>=4.3.0
+dj-database-url>=2.2.0
+
+# For serving Django via Gunicorn (production)
+gunicorn>=21.2.0
+
+# Optional but recommended for static files in production
+whitenoise>=6.6.0
