@@ -64,9 +64,11 @@ def sentiment_analyzer(message, rating):
             score = 1.0 if sentiment == "positive" else 0.5 if sentiment == "neutral" else 0.0
             result["sentiment_score"] = round(score, 2)
 
+        print(result)
         return result
 
     except Exception as e:
+        print(e)
         # Fallback in case of any failure
         return {
             "sentiment": "neutral",
@@ -158,14 +160,14 @@ def delete_feedback_service(request, feedback_id):
     except Exception as e:
         return error_response(message=str(e), status=500)
     
+
 def feedback_count_service(request, form_uuid):
     feedback_counts = (
         Feedback.objects
-        .filter(uuid=form_uuid)
-        .annotate(date=TruncDate('sentiment'))  # assuming BaseModel has created_at
-        .values('date')
-        .annotate(count=Count('id'))
-        .order_by('-sentiment')
+        .filter(form__uuid=form_uuid, is_deleted=False)
+        .values('sentiment')              # group by sentiment
+        .annotate(count=Count('id'))      # count feedback per sentiment
+        .order_by('-count')               # optional: sort by most frequent sentiment
     )
 
     return success_response(list(feedback_counts))
