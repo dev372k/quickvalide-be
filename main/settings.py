@@ -79,12 +79,7 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 # Database (PostgreSQL)
 DATABASES = {
-    'default': dj_database_url.parse(
-        os.getenv(
-            'DATABASE_URL',
-            'postgresql://postgres.hqqsayjdkvxowejfnfdl:Owais@5975@aws-1-us-east-1.pooler.supabase.com:5432/postgres'
-        )
-    )
+    'default': dj_database_url.parse('postgresql://postgres.hqqsayjdkvxowejfnfdl:Owais@5975@aws-1-us-east-1.pooler.supabase.com:5432/postgres')
 }
 
 # Custom User Model
@@ -135,15 +130,15 @@ CORS_ALLOW_ALL_ORIGINS = True  # Use specific whitelist in production
 # -------------------------------
 # ✅ SECURITY SETTINGS
 # -------------------------------
-CSRF_TRUSTED_ORIGINS = [
-    "https://quickvalide.com",
-    "https://www.quickvalide.com",
-]
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
-SECURE_SSL_REDIRECT = not DEBUG
+# CSRF_TRUSTED_ORIGINS = [
+#     "https://quickvalide.com",
+#     "https://www.quickvalide.com",
+# ]
+# SECURE_BROWSER_XSS_FILTER = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# SESSION_COOKIE_SECURE = not DEBUG
+# CSRF_COOKIE_SECURE = not DEBUG
+# SECURE_SSL_REDIRECT = not DEBUG
 
 # -------------------------------
 # ✅ LOGGING CONFIGURATION
@@ -159,3 +154,5 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+DISABLE_COLLECTSTATIC=1
