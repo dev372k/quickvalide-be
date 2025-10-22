@@ -5,6 +5,11 @@ import time
 from django.db.models import Count
 from django.db.models.functions import TruncDate
 from .models import ApiLog
+from django.utils import timezone
+from datetime import datetime
+from datetime import timedelta
+
+
 
 
 def get_user_from_request(request):
@@ -86,12 +91,21 @@ def delete_feedback_service(request, form_uuid):
 
 # API Logs work
 def api_call_count_per_day(request):
+    now = datetime.now()
+    start_of_month = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    
+    # Calculate the first day of next month
+    if now.month == 12:
+        end_of_month = start_of_month.replace(year=now.year + 1, month=1)
+    else:
+        end_of_month = start_of_month.replace(month=now.month + 1)
     api_counts = (
         ApiLog.objects
+        .filter(created_at__gte=start_of_month, created_at__lt=end_of_month)
         .annotate(date=TruncDate('created_at'))  # assuming BaseModel has created_at
         .values('date')
         .annotate(count=Count('id'))
-        .order_by('-date')
+        .order_by('date')
     )
 
     return success_response(list(api_counts))
@@ -99,9 +113,11 @@ def api_call_count_per_day(request):
 def list_apilogs_by_user_service(request):
     try:
         user = get_user_from_request(request)
+        today = timezone.now()
+        week_start = today - timedelta(days=7)
 
         apilogs = (
-            ApiLog.objects.filter(user=user)
+            ApiLog.objects.filter(user=user, created_at__gte = week_start)
             .values(
                 "id",
                 "name",
@@ -112,12 +128,12 @@ def list_apilogs_by_user_service(request):
                 "response_time",
                 "created_at",
             )
-            .order_by("-created_at")
+            .order_by("created_at")
         )
 
         return success_response(
             data=list(apilogs),
-            message="API logs retrieved successfully."
+            message="Weekly API logs retrieved successfully."
         )
 
     except Exception as e:
