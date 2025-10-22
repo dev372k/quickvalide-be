@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 # Database (PostgreSQL)
 DATABASES = {
-    'default': dj_database_url.parse('postgresql://postgres.hqqsayjdkvxowejfnfdl:Owais@5975@aws-1-us-east-1.pooler.supabase.com:5432/postgres')
+    'default': dj_database_url.parse('postgres://u204cefrf77r0e:pebb6feea16e81428236f53ace5352fb39c2aa04f13f9f4e04831b0e2f0dcba15@c4uljrch9k8rpm.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/dhkf9peqqppma')
 }
 
 # Custom User Model
