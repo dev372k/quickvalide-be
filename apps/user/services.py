@@ -49,7 +49,7 @@ def create_user_service(request):
     
     Form.objects.create(
           user=user,
-          title=f"Sample Form {uuid.uuid4().hex}",
+          title="Sample Form",
           description="This is sample form description",
           slug=slugify(f"Sample Form-{uuid.uuid4().hex}"),
           redirect_url="",
