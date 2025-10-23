@@ -3,7 +3,7 @@ from django.utils.text import slugify
 from .models import Form
 from ..user.models import Profile
 from commons.utils.jsonUtil import success_response, error_response
-
+import uuid
 
 def get_user_from_request(request):
     user_id = request.user_id
@@ -26,7 +26,7 @@ def create_form_service(request):
         if not title:
             return error_response("Title is required", status=400)
 
-        slug = slugify(title)
+        slug = slugify(f"{title}-{uuid.uuid4().hex}")
 
         form = Form.objects.create(
             user=user,
