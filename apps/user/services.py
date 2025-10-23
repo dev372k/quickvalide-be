@@ -1,10 +1,12 @@
 import json
 import jwt
 import datetime
+from django.utils.text import slugify
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 from django.conf import settings 
 from .models import Profile
+from form.models import Form
 import uuid
 from django.shortcuts import get_object_or_404
 from commons.utils.jsonUtil import success_response, error_response
@@ -38,12 +40,24 @@ def get_user(user):
 def create_user_service(request):
     data = json.loads(request.body)
     hashed = make_password(data.get("password"))
-    Profile.objects.create(username=data.get("username"), 
+    user = Profile.objects.create(username=data.get("username"), 
                            password=hashed,email =data.get("email"),
                            first_name=data.get('first_name'),
                            last_name=data.get('last_name'), 
                            plan = plan[0], 
                            api_key = uuid.uuid4().hex)
+    
+    Form.objects.create(
+          user=user,
+          title=f"Sample Form {uuid.uuid4().hex}",
+          description="This is sample form description",
+          slug=slugify(f"Sample Form-{uuid.uuid4().hex}"),
+          redirect_url="",
+          theme={},
+          widget_theme={},
+          is_public=False,
+     )
+    
     return success_response(message="User registered successfully.")
 
 def get_user_service(request):     
