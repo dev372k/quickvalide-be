@@ -91,6 +91,7 @@ def delete_feedback_service(request, form_uuid):
 
 # API Logs work
 def api_call_count_per_day(request):
+    user = get_user_from_request(request)
     now = datetime.now()
     start_of_month = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
     
@@ -101,7 +102,7 @@ def api_call_count_per_day(request):
         end_of_month = start_of_month.replace(month=now.month + 1)
     api_counts = (
         ApiLog.objects
-        .filter(created_at__gte=start_of_month, created_at__lt=end_of_month)
+        .filter(user=user, created_at__gte=start_of_month, created_at__lt=end_of_month)
         .annotate(date=TruncDate('created_at'))  # assuming BaseModel has created_at
         .values('date')
         .annotate(count=Count('id'))
