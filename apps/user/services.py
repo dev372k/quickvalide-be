@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 from django.conf import settings 
 from .models import Profile
-from form.models import Form
+from ..form.models import Form
 import uuid
 from django.shortcuts import get_object_or_404
 from commons.utils.jsonUtil import success_response, error_response
