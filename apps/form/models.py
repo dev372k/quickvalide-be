@@ -15,6 +15,7 @@ class Form(BaseModel):
     slug = models.SlugField(unique=True)
     redirect_url = models.URLField(max_length=200, blank=True, null=True)
     theme = models.JSONField(default=dict, blank=True, null=True)
+    fields = models.JSONField(default=list, blank=True, null=True)
     widget_theme = models.JSONField(default=dict, blank=True, null=True)
     is_public = models.BooleanField(default=False)
 

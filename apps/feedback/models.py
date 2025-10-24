@@ -33,7 +33,7 @@ class Feedback(BaseModel):
 
     summary = models.TextField(blank=True, null=True)
     suggestions = models.JSONField(default=list, blank=True, null=True)
-
+    meta = models.JSONField(default=list, blank=True, null=True)
     rating = models.PositiveIntegerField(
         choices=[(i, i) for i in range(1, 6)],
         default=1,

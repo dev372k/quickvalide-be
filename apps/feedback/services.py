@@ -89,6 +89,7 @@ def create_feedback_service(request):
         message = data.get("message", "")
         rating = int(data.get("rating", 3))
         email = data.get("email")
+        meta = data.get("meta")
 
         # AI Sentiment Analysis
         ai_result = sentiment_analyzer(message, rating)
@@ -103,6 +104,7 @@ def create_feedback_service(request):
             summary=ai_result.get("summary"),
             suggestions=ai_result.get("suggestions", []),
             rating=rating,
+            meta = meta
         )
 
         return success_response(
@@ -113,6 +115,7 @@ def create_feedback_service(request):
                 "sentiment_score": feedback.sentiment_score,
                 "summary": feedback.summary,
                 "suggestions": feedback.suggestions,
+                "meta" : feedback.meta
             },
         )
     except Exception as e:
