@@ -127,7 +127,7 @@ def list_feedback_by_user_service(request, form_uuid):
         user = get_user_from_request(request)
         form = get_object_or_404(Form, uuid=form_uuid, user=user, is_deleted=False)
         feedbacks = form.feedbacks.filter(is_deleted=False).values(
-            "id", "name", "email", "message", "sentiment", "sentiment_score", "suggestions", "rating", "created_at"
+            "id", "name", "email", "message", "sentiment", "sentiment_score", "suggestions","meta", "rating", "created_at"
         )
         return success_response(data=list(feedbacks), message="Feedback list retrieved successfully.")
     except Exception as e:
@@ -137,7 +137,7 @@ def list_feedback_by_form_service(request, form_uuid):
     try:
         form = get_object_or_404(Form, uuid=form_uuid, is_deleted=False)
         feedbacks = form.feedbacks.filter(is_deleted=False, sentiment="positive").values(
-            "id", "name", "email", "message", "sentiment", "sentiment_score", "suggestions", "rating", "created_at"
+            "id", "name", "email", "message", "sentiment", "sentiment_score", "suggestions","meta", "rating", "created_at"
         )
         return success_response(data=list(feedbacks), message="Feedback list retrieved successfully.")
     except Exception as e:
